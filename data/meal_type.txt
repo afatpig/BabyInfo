@@ -1,0 +1,5 @@
+id;meal_type;meal_type_chs
+0;porridge;營業粥
+1;milk powder;奶粉
+2;nutritious rice;營養米
+3;other;其他

@@ -1,0 +1,5 @@
+id;detail;detail_chs
+0;normal;正常
+1;always cry;一直哭
+2;Sleepy;睡了
+3;other;其他

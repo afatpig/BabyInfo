@@ -1,0 +1,6 @@
+id;status;status_chs
+0;normal;正常
+1;skin rash;皮疹
+2;swollen skin;皮膚腫脹
+3;bruise skin;皮膚擦傷
+4;other;其它

@@ -1,0 +1,112 @@
+// all
+{
+    "code": 0,
+    "msg": "",
+    "count": 1,
+    "data":[ ]
+}
+
+// error 10
+{
+    "code": 10,
+    "msg": "數據庫錯誤",
+    "count": 1,
+    "data":[]
+}
+
+// getSecret
+{
+    "code": 0,
+    "msg": "",
+    "count": 1,
+    "data":[{
+            "secret_key":"jdisnehf283bfy15",
+            "secret":"123e4567-e89b-12d3-a456-426655440000"
+        }]
+}
+
+//login
+{
+    "code": 0,
+    "msg": "",
+    "count": 1,
+    "data":[{
+            "secret_key":"jdisnehf283bfy15",
+            "secret":"523a3563-e89b-12d3-a456-426655441234",
+            "token":"523e4567-e89b-12d3-a456-426655440000"
+        }]
+}
+
+// checkUsers
+{
+    "code": 0,
+    "msg": "",
+    "count": 1,
+    "data":[{"exists":0}]
+}
+
+// users,get
+{
+    "code": 0,
+    "msg": "",
+    "count": 2,
+    "data":[
+        {
+            "id":0,
+            "username":"p1",
+            "name":"pt",
+            "name_chs":"張三",
+            "child_ids":"1",
+            "edu":"小學(Primary school)",
+            "occuration":"教師(teacher)",
+            "tel":"1234567890"
+        },{
+            "id":1,
+            "username":"l2",
+            "name":"lisy",
+            "name_chs":"李四",
+            "child_ids":"2,3",
+            "edu":"小學(Primary school)",
+            "occuration":"教師(teacher)",
+            "tel":"0987654321"
+        }
+    ]
+}
+
+// staffs,get
+{
+    "code": 0,
+    "msg": "",
+    "count": 1,
+    "data":[
+        {
+            "id":0,
+            "username":"s1",
+            "name":"sta",
+            "name_chs":"王二",
+            "gender":"f",
+            "group_id":1
+        }
+    ]
+}
+
+// user,get
+{
+    "code": 0,
+    "msg": "",
+    "count": 1,
+    "data":[
+        {
+            "id":0,
+            "username":"p1",
+            "name":"pt",
+            "name_chs":"張三",
+            "child_ids":"1",
+            "relations":"父子(father)"
+            "edu":"小學(Primary school)",
+            "occuration":"教師(teacher)",
+            "tel":"1234567890",
+            "reason":"此校非常校，欲得非常人，需入非常校"
+        }
+    ]
+}

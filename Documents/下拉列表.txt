@@ -1,0 +1,7 @@
+group: 1-6 7-12 13-18
+skin_condition: normal, skin rash, swollen skin, bruise skin, other
+meal_type: porridge, milk powder, nutritious rice, other
+nap_quality: normal, always wake up, did not sleep
+diaper_status: normal, problem please remark
+perform_status: normal, always cry, Sleepy, other
+health:0;normal,sick,other

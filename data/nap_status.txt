@@ -1,0 +1,4 @@
+id;napquality;napquality_chs
+0;normal;正常
+1;always wake up;未睡著
+2;did not sleep;未睡

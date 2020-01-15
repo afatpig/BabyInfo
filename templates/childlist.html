@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block langmeta %}<meta id="i18n_pagename" content="base-idxparent-parentinfo">{% endblock %}
+{% block title %}<title i18nkey='title_cl'></title>{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/statuslist.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="layui-row articlediv">
+    
+    <div class="tdiv2">
+        <div class="tdiv1">
+            <table id="statuslist" lay-filter="statuslist" class='datatable'></table>
+        </div>
+    </div>
+    
+    <div id="pagebar1"></div>
+</div>
+{% endblock %}
+{% block thisnav %}"nav-index"{% endblock %}
+{% block nextscript %}
+<script src="{{ url_for('static',filename='js/md5.js') }}"></script>
+<script src="{{ url_for('static',filename='js/funcs.js') }}"></script>
+<script src="{{ url_for('static',filename='js/layui/layui.js') }}"></script>
+<script>
+    var _page=1;
+    var _limit=10;
+    layui.use('element', function () {
+            var element = layui.element;
+        });
+    confset = {
+        elem: '#statuslist',
+        limit: _limit,
+        page: false //开启分页
+        ,
+        limits: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100],
+        cols: [
+            [ //表头
+                {
+                    field: 'id', title: $.i18n.prop('id_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'alias', title: $.i18n.prop('alias_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'name', title: $.i18n.prop('name_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'name_chs', title: $.i18n.prop('name_chs_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'gender', title: $.i18n.prop('gender_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'born_day', title: $.i18n.prop('born_day_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'place_birth', title: $.i18n.prop('place_birth_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'date_in', title: $.i18n.prop('date_in_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'tel', title: $.i18n.prop('tel_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'caregiver_id', title: $.i18n.prop('caregiver_id_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'caregiver_name', title: $.i18n.prop('caregiver_name_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'caregiver_name_chs', title: $.i18n.prop('caregiver_name_chs_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'lang', title: $.i18n.prop('lang_n'), fixed: 'left',
+                    sort: true
+                },
+                {
+                    field: 'group_id', title: $.i18n.prop('group_id_n'), fixed: 'left',
+                    sort: true
+                }
+            ]
+        ]
+    }
+    
+    confset2 = {
+            elem: 'pagebar1' //注意，这里的 test1 是 ID，不用加 # 号
+            ,limit:_limit
+            ,count:100
+            ,prev:$.i18n.prop('prev')
+            ,next:$.i18n.prop('next')
+            ,jump: function(obj, first){
+                //obj包含了当前分页的所有参数，比如：
+                _page=obj.curr;
+                _limit=obj.limit;
+                
+                //首次不执行
+                if(!first){
+                //do something
+                showdata();
+                }
+            }
+        }
+    var table =  null;
+    var laypage = null;
+
+    layui.use(['laydate', 'table', 'laypage'], function () {
+        table = layui.table;
+        table.render(confset);
+        var laydate1 = layui.laydate;
+        var laydate2 = layui.laydate;
+        //监听表格行单击事件
+        table.on('row(statuslist)', function (obj) {
+            // to do
+            var id = obj.data['id'];
+            window.location.href = '/alterchild?id='+id.toString();
+        });
+        laypage = layui.laypage;
+        //执行一个laypage实例
+        laypage.render(confset2);
+        showdata();
+    });
+    
+    function showdata(){
+        var _ip_ep = '/api/children/infos';
+        var _params = {
+            'page':_page,
+            'limit':_limit,
+            'secret_key': getCookie('secret_key'),
+            'keys': 'page,limit,secret_key'
+        }
+        _params = sign(_params);
+        var resdata = null;
+        $.ajax({
+                async:true,
+                url:_ip_ep,
+                type:'GET',
+                data:_params,
+                success:function(data){
+                    if(data['code']!=0){
+                        alert("Error!\n"+data['msg']);
+                        return ;
+                    }
+                    var dlen = data['data'].length;
+                    confset.data = data['data'];
+                    table.render(confset);
+                    confset2.count=data['count'];
+                    laypage.render(confset2);
+                },
+                error:function(xhr,status,error){
+                    alert('Error: '+status.toString());
+                }
+            });
+    }
+</script>
+{% endblock %}

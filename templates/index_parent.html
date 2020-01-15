@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% block langmeta %}<meta id="i18n_pagename" content="base-idxparent">{% endblock %}
+{% block title %}<title i18nkey='title_parent'></title>{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static',filename='css/index_parent.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- 统计信息 -->
+<div class="layui-row articlediv">
+        {% if status and status['code']==0 %}
+        {% for _cs in status['data'] %}
+    <div class="layui-row">
+        <blockquote class="layui-elem-quote aliasbq">
+            <span class='aliasp'>{{_cs['alias']}}</span>
+            <a class='infobtn' href="childinfo?id={{_cs['id']}}" i18nkey='jump2info'></a>  
+        </blockquote>
+        <div id="info-{{_cs['id']}}" class="statusdiv layui-col-xs12 layui-col-sm8 layui-col-sm-offset2">
+            <div class='infotitle'>
+                <h2 i18nkey='tabletitle'></h2>
+                <br />
+            </div>
+            <!-- name -->
+            <table class='layui-table statustb'>
+                <tr><td i18nkey='alias'></td><td>{{_cs['alias']}}</td></tr>
+                <tr><td i18nkey='name2'></td><td>{{_cs['name']}}</td></tr>
+                <tr><td i18nkey='namechs'></td><td>{{_cs['name_chs']}}</td></tr>
+            </table>
+        </div>
+    </div>
+        {% endfor %}
+        {% endif %}
+</div>
+
+{% endblock %}
+{% block thisnav %}"nav-index"{% endblock %}
+{% block nextscript %}
+<script>
+    // show status
+    {% if status and status['code']==0 %}
+    cstatus = {{status['data']|tojson}};
+    var cslen = cstatus.length;
+    for(var csi=0; csi<cslen; csi++){
+        var _cid = cstatus[csi]['id'].toString();
+        var _div = $('#info-'+_cid)[0];
+        var _csid = cstatus[csi]['data']['data'];
+        var csjlen = _csid.length;
+        for(var csj=0; csj<csjlen; csj++){
+            var _line = _csid[csj];
+            // table
+            var _tb = $("<table class='layui-table statustb'></table>");
+            // tr
+            var statusname = $.i18n.prop(_line['type']+'_sn');
+            $(_div).append('<br />');
+            $(_div).append($('<h3 class="subtn"></h3>').text(statusname));
+            var _tr = $("<tr></tr>");
+            var _td = $("<td></td>");
+            // time
+            if(_line['time']){
+                var _tr1 = _tr.clone();
+                _tr1.append(_td.clone().text($.i18n.prop('time')));
+                _tr1.append(_td.clone().text(_line['time']));
+                _tb.append(_tr1);
+            }
+            // status
+            if(_line['status']){
+                var _tr1 = _tr.clone();
+                _tr1.append(_td.clone().text(statusname));
+
+                if(_line['type']=='temperature'){
+                    _tr1.append(_td.clone().text(_line['status'].toString()));
+                }
+                else{
+                    // 根據語言選擇
+                    var _svn = 'val';
+                    switch(i18nLanguage){
+                        case 'en':
+                            _svn = 'val';
+                            break;
+                        case 'zh-TW':
+                            _svn = 'val_chs';
+                            break;
+                    }
+                    _tr1.append(_td.clone().text(_line['status'][_svn]));
+                }
+                
+                // show warning
+                var _w = false;
+                switch(_line['type']){
+                    case 'temperature':
+                        if(_line['status']>37){
+                            _tr1.addClass('warning');
+                        }
+                        break;
+                    case 'meal':
+                        break;
+                    case 'perform':
+                        if(_line['status']['id']!=0 && _line['status']['id']!=2){
+                            _tr1.addClass('warning');
+                        }
+                        break;
+                    default:
+                    if(_line['status']['id']!=0){
+                            _tr1.addClass('warning');
+                        }
+                        break;
+                }
+                _tb.append(_tr1);
+            }
+            // count
+            if(_line['count']){
+                var _tr1 = _tr.clone();
+                _tr1.append(_td.clone().text($.i18n.prop('count')));
+                _tr1.append(_td.clone().text(_line['count'].toString()));
+                _tb.append(_tr1);
+            }
+            // staff
+            if(_line['staff_id']){
+                var _tr1 = _tr.clone();
+                _tr1.append(_td.clone().text($.i18n.prop('staff_id')));
+                _tr1.append(_td.clone().text(_line['staff_id']));
+                _tb.append(_tr1);
+            }
+            // remark
+            if(_line['remark']){
+                var _tr1 = _tr.clone();
+                _tr1.append(_td.clone().text($.i18n.prop('remark')));
+                _tr1.append(_td.clone().text(_line['remark']));
+                _tb.append(_tr1);
+            }
+            $(_div).append(_tb);
+        }
+    }
+    {% endif %}    
+    
+    {% if secret %}
+    //localStorage.clear();
+    localStorage.removeItem("sc");
+    localStorage.setItem("sc","{{secret}}");
+    {% endif %}
+</script>
+{% endblock %}

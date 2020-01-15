@@ -1,0 +1,4 @@
+id;status;status_chs
+0;normal;正常
+1;sick;生病
+2;other;其他
