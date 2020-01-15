@@ -45,7 +45,7 @@ import configparser
 # init-------------------------------------------------
 
 # debug模式
-MODE_DEBUG = false
+MODE_DEBUG = False
 
 # 构建app，设置log，设置config，设置mail
 config = configparser.ConfigParser()
