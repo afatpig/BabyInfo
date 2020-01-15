@@ -121,7 +121,7 @@ def error(e):
     try:
         return render_template('error.html', code=int(e.code), loggeduser=_un)
     except Exception as e:
-        app.debug('exception is %s' % e)
+        app.logger.debug('exception is %s' % e)
     finally:
         return render_template('error.html', code=int(e.code), loggeduser=_un)
 
