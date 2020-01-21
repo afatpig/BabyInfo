@@ -34,6 +34,7 @@
     :param clear:       是否先清空原有數據，True=清空原數據
     :param logger:      logger
 """
+import aaa_setTZ
 import configparser
 import logging
 import os

@@ -6,6 +6,7 @@ Flask框架的web服务
 建立flask app，设置logger和错误页面路由
 注册蓝图
 """
+import aaa_setTZ
 import base64
 import logging
 import multiprocessing
